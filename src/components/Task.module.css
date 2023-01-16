@@ -1,0 +1,26 @@
+.Check {
+  width: 1rem;
+  height: 1rem;
+  background-color: transparent;
+  border: 1px solid var(--blue);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.Trash {
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+}
+
+.noTasks {
+  width: 46rem;
+  min-height: 18rem;
+  margin: 0rem auto;
+  align-items: center;
+  display: flex;
+  margin-top: 0rem;
+  flex-direction: column;
+  margin-top: 4rem;
+  gap: 1rem;
+}
