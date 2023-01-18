@@ -33,7 +33,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem 2rem ;
+  padding: 1rem 2rem;
 
   border-radius: 8px;
 
@@ -52,16 +52,17 @@
 }
 
 .Check {
-  width: 1rem;
-  height: 1rem;
+  width: 1.5rem;
+  height: 1.5rem;
   background-color: transparent;
   border: 1px solid var(--blue);
   border-radius: 50%;
   cursor: pointer;
 }
 
-.Check.clicked, .Check:hover {
-  background-color: var(--white);
+.Check.clicked,
+.Check:hover {
+  background-color: var(--blue-dark);
 }
 
 .Trash {
@@ -70,6 +71,10 @@
   border: none;
   padding: 0;
   margin: 0;
+}
+
+.Trash:focus {
+  box-shadow: none;
 }
 
 .Completed {

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Clipboard } from 'phosphor-react';
 
 //Styles
@@ -32,6 +32,8 @@ export function Tasks() {
 
   const handleDeleteTask = (index) => {
     setTasks(tasks.filter((task, i) => i !== index));
+
+    console.log('Task removed successfully! :D');
   };
 
   const handleKeyDown = (e) => {
@@ -41,9 +43,20 @@ export function Tasks() {
   };
 
   const handleTaskCompleted = (index) => {
-    setCompletedTasks(completedTasks + 1);
-    setTasks(tasks.filter((task, i) => i !== index));
+    setTasks(
+      tasks.map((task, i) => {
+        if (i === index) {
+          if (!task.completed) {
+            setCompletedTasks(completedTasks + 1);
+          }
+          return { ...task, completed: !task.completed };
+        }
+        return task;
+      }),
+    );
   };
+
+  const completed = tasks.filter((task) => task.completed).length;
 
   return (
     <div className={styles.container}>
@@ -68,7 +81,9 @@ export function Tasks() {
         </h4>
         <h4>
           Tarefas concluídas
-          <span>{completedTasks} de {tasks.length}</span>
+          <span>
+            {completed} de {tasks.length}
+          </span>
         </h4>
       </header>
 
@@ -79,6 +94,7 @@ export function Tasks() {
               key={index}
               task={task}
               handleDeleteTask={handleDeleteTask}
+              handleTaskCompleted={handleTaskCompleted}
               index={index}
             />
           );
