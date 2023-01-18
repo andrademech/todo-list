@@ -1,19 +1,21 @@
 import { useState } from 'react';
-import { Clipboard, Trash } from 'phosphor-react';
+import { Clipboard } from 'phosphor-react';
 
 //Styles
 import styles from './Tasks.module.css';
 
 //Components
 import { Button } from './Button';
+import { Task } from './Task';
 
 export function Tasks() {
-  const [tasks, setTasks] = useState('');
+  const [tasks, setTasks] = useState([]);
   const [newTaskText, setNewTaskText] = useState('');
+  const [completedTasks, setCompletedTasks] = useState(0);
 
   const handleCreateNewTask = (e) => {
     e.preventDefault();
-    setTasks([...tasks, newTaskText]);
+    setTasks([...tasks, { task: newTaskText, completed: false }]);
     setNewTaskText('');
 
     console.log('Task created successfully! :D');
@@ -28,6 +30,21 @@ export function Tasks() {
     console.log(e.target.setCustomValidity('Este campo é obrigatório.'));
   };
 
+  const handleDeleteTask = (index) => {
+    setTasks(tasks.filter((task, i) => i !== index));
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleCreateNewTask(e);
+    }
+  };
+
+  const handleTaskCompleted = (index) => {
+    setCompletedTasks(completedTasks + 1);
+    setTasks(tasks.filter((task, i) => i !== index));
+  };
+
   return (
     <div className={styles.container}>
       <form className={styles.form} onSubmit={handleCreateNewTask}>
@@ -38,6 +55,7 @@ export function Tasks() {
           value={newTaskText}
           onChange={handleNewTaskChange}
           onInvalid={handleNewTaskInvalid}
+          onKeyDown={(e) => handleKeyDown(e)}
           required
         />
         <Button handleCreateNewTask={handleCreateNewTask} />
@@ -50,15 +68,28 @@ export function Tasks() {
         </h4>
         <h4>
           Tarefas concluídas
-          <span>0</span>
+          <span>{completedTasks} de {tasks.length}</span>
         </h4>
       </header>
 
-      {/* {tasks.map((task) => {
+      {tasks.length ? (
+        tasks.map((task, index) => {
           return (
-
-          )
-        })} */}
+            <Task
+              key={index}
+              task={task}
+              handleDeleteTask={handleDeleteTask}
+              index={index}
+            />
+          );
+        })
+      ) : (
+        <div className={styles.noTasks}>
+          <Clipboard size={56} />
+          <h3>Você ainda não tem tarefas cadastradas</h3>
+          <span>Crie tarefas e organize seus itens a fazer</span>
+        </div>
+      )}
     </div>
   );
 }
